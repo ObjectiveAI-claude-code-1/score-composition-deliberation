@@ -1,0 +1,199 @@
+{
+  "type": "scalar.function",
+  "input_schema": {
+    "type": "object",
+    "description": "A cat photo",
+    "properties": {
+      "url": {
+        "type": "string",
+        "description": "The URL or file path to the cat photo image"
+      },
+      "title": {
+        "type": "string",
+        "description": "An optional title or label for the photo"
+      },
+      "photographer": {
+        "type": "string",
+        "description": "An optional credit to the photographer"
+      }
+    },
+    "required": [
+      "url"
+    ]
+  },
+  "tasks": [
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Examine this cat photograph carefully and focus on the framing choices made by the photographer. How intentional do the frame boundaries appear?"
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "$starlark": "{'url': input['url']}"
+              }
+            }
+          ]
+        }
+      ],
+      "responses": [
+        [
+          {
+            "type": "text",
+            "text": "The frame boundaries clearly reflect intentional compositional choices. What's included and excluded within the frame has been carefully considered, demonstrating strategic use of frame edges, negative space, or rule of thirds principles."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The frame shows some intentional compositional choices, though it's unclear whether all framing decisions were deliberately made or partly accidental."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The frame appears to be arranged casually without deliberate consideration for its boundaries. There is little evidence that the photographer intentionally decided what to include or exclude."
+          }
+        ]
+      ],
+      "output": {
+        "$starlark": "output['scores'][0] * 1.0 + output['scores'][1] * 0.5 + output['scores'][2] * 0.0"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Consider the camera angle and perspective chosen for this cat photograph. What does the angle suggest about the photographer's artistic intentions?"
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "$starlark": "{'url': input['url']}"
+              }
+            }
+          ]
+        }
+      ],
+      "responses": [
+        [
+          {
+            "type": "text",
+            "text": "The camera angle appears deliberately chosen to serve a specific artistic purpose. The perspective enhances the viewer's emotional engagement and reveals intentional thinking about how the angle presents the subject."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The camera angle seems reasonable and acceptable, though it's unclear whether it was deliberately selected or simply a convenient shooting position."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The camera angle appears arbitrary or accidental, without evidence of deliberate artistic intention behind the choice of viewpoint."
+          }
+        ]
+      ],
+      "output": {
+        "$starlark": "output['scores'][0] * 1.0 + output['scores'][1] * 0.5 + output['scores'][2] * 0.0"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Look at where the cat is positioned within the frame. What does this positioning reveal about the photographer's compositional thinking?"
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "$starlark": "{'url': input['url']}"
+              }
+            }
+          ]
+        }
+      ],
+      "responses": [
+        [
+          {
+            "type": "text",
+            "text": "The cat's position demonstrates deliberate compositional thinking. The placement effectively creates visual hierarchy, guides the viewer's eye intentionally, and reflects clear decisions about subject emphasis within the frame."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The cat is positioned adequately within the frame, though it's unclear if this placement was intentionally planned or simply where the cat happened to be when photographed."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The cat appears to be positioned arbitrarily within the frame with little apparent compositional intent or consideration of visual hierarchy."
+          }
+        ]
+      ],
+      "output": {
+        "$starlark": "output['scores'][0] * 1.0 + output['scores'][1] * 0.5 + output['scores'][2] * 0.0"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Step back and evaluate this photograph as a complete composition. How well do all the elements—the cat, background, lighting, framing, and perspective—work together?"
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "$starlark": "{'url': input['url']}"
+              }
+            }
+          ]
+        }
+      ],
+      "responses": [
+        [
+          {
+            "type": "text",
+            "text": "All compositional elements work together as a unified, intentional whole. The composition feels deliberately orchestrated, with clear evidence that the photographer considered how each element contributes to a cohesive artistic vision."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The composition shows reasonable coherence, though it's unclear if all elements were intentionally arranged together or if some came together by chance."
+          }
+        ],
+        [
+          {
+            "type": "text",
+            "text": "The photograph feels scattered or disjointed, with compositional elements appearing arbitrary rather than deliberately unified under a coherent artistic vision."
+          }
+        ]
+      ],
+      "output": {
+        "$starlark": "output['scores'][0] * 1.0 + output['scores'][1] * 0.5 + output['scores'][2] * 0.0"
+      }
+    }
+  ],
+  "description": "Evaluates cat photographs to measure compositional intentionality, analyzing frame boundaries, camera angle, subject positioning, and visual coherence. Distinguishes deliberate artistic choices from accidental arrangement, producing a score from 0.0 to 1.0 reflecting how intentionally the photographer composed their image."
+}
